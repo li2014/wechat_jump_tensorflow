@@ -4,8 +4,8 @@ import numpy as np
 import tensorflow as tf
 import time
 import os
-from utils import label_map_util
-from utils import visualization_utils as vis_util
+from .utils import label_map_util
+from .utils import visualization_utils as vis_util
 import cv2
 
 if tf.__version__ != '1.4.0':

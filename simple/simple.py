@@ -34,10 +34,16 @@ if size_str:
 		if hxw == "960x540":
 			fix = 3.16
 
+import itertools
+jump_times = itertools.count(0)
 while True:
+	screenshot = str(next(jump_times)) + '.png'
 	pull_screenshot(screenshot)
 	image_np = cv2.imread(screenshot)
+	#在OpenCV中，图像不是用常规的RGB颜色通道来存储的，它们用的是BGR顺序。当读取一幅图像后，默认的是BGR
+	#颜色空间转换可以用函数cvtColor()函数
 	image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
+	#
 	gray = cv2.Canny(image_np, 20, 80)
 
 	HEIGHT = image_np.shape[0]
@@ -86,11 +92,12 @@ while True:
 	gray[:, chess_x] = 255
 	gray[:, target_x] = 255
 	# 保存检测图
-	cv2.imwrite('detection.png', gray)
+	cv2.imwrite(screenshot.replace(".png",".debug.png"), gray)
 
 	print(chess_x, target_x)
 	jump(float(np.abs(chess_x - target_x)) / WIDTH, alpha)
 
 	# 等棋子落稳
-	time.sleep(np.random.random() + 1)
+	time.sleep(np.random.random() + 0.5)
+
 
